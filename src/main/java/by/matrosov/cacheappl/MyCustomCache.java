@@ -32,10 +32,19 @@ public class MyCustomCache <K extends Serializable, V extends Serializable> impl
 
     @Override
     public void get(K key) {
+        Object object;
         if (firstLayer.containsKey(key)){
-            LOGGER.info("getting object from first layer... " + firstLayer.get(key));
+            LOGGER.info("getting object from first layer... ");
+            object = firstLayer.get(key);
         }else {
-            LOGGER.info("getting object from second layer... " + firstLayer.getSecondLayer().get(key));
+            LOGGER.info("getting object from second layer...");
+            object = firstLayer.getSecondLayer().get(key);
+        }
+
+        if (object == null){
+            LOGGER.info("Oops...object with key " + key + " not found");
+        }else {
+            LOGGER.info("Found object: " + object);
         }
     }
 
