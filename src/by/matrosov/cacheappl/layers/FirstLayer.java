@@ -1,23 +1,24 @@
 package by.matrosov.cacheappl.layers;
 
+import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class FirstLayer<K,V> extends LinkedHashMap<K,V> {
+public class FirstLayer<K extends Serializable,V extends Serializable> extends LinkedHashMap<K,V> {
 
-    private final int MAX_SIZE = 8;
-    private SecondLayer<K,V> secondLayer;
+    private static final int MAX_SIZE = 4;
+    private SecondLayer<K,V> secondLayer = new SecondLayer<>();
 
-    //or write smth like loadFactory in map
     @Override
     public boolean removeEldestEntry(Map.Entry<K, V> eldest) {
-        //System.out.println(eldest); //why it going into console 3 times?
 
         //add eldest element to second layer
-        secondLayer.add(eldest);
-
-        //remove eldest element from first layer
-        return size() > MAX_SIZE;
+        if (size() > MAX_SIZE){
+            secondLayer.add(eldest);
+            return true;
+        }else {
+            return false;
+        }
     }
 
     public SecondLayer<K, V> getSecondLayer() {

@@ -1,19 +1,24 @@
 package by.matrosov.cacheappl.layers;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
+import java.util.HashMap;
 import java.util.Map;
 
-public class SecondLayer<K, V> {
+public class SecondLayer<K extends Serializable, V extends Serializable> {
     private static final String FILE_NAME = "data.dat";
+    private static boolean emptyFlag = true;
 
-    public SecondLayer() {
+    SecondLayer() {
     }
 
     void add(Map.Entry<K, V> entry){
-        Map<K,V> map = getAll();
+        Map<K,V> map;
+        if (emptyFlag){
+            map = new HashMap<>();
+            emptyFlag = false;
+        }else {
+            map = getAll();
+        }
         map.put(entry.getKey(), entry.getValue());
         write2file(map);
     }
@@ -25,7 +30,7 @@ public class SecondLayer<K, V> {
 
             map = (Map<K, V>) ois.readObject();
             for (K k : map.keySet()){
-                if (k == key){ //hm? how to compare with type K
+                if (k.hashCode() == key.hashCode()){ //hm? how to compare with type K
                     return map.get(key);
                 }
             }
@@ -46,6 +51,16 @@ public class SecondLayer<K, V> {
                 write2file(map);
                 return;
             }
+        }
+    }
+
+    public void print(){
+        Map<K,V> map;
+        try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILE_NAME))){
+            map = (Map<K, V>) ois.readObject();
+            map.forEach((k,v)-> System.out.println("Key : " + k + ", Value : " + v));
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 

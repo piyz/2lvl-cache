@@ -6,6 +6,12 @@ import java.io.Serializable;
 
 public class MyCustomCache <K extends Serializable, V extends Serializable> implements Cache <K,V> {
 
+    //какие элеенты попали
+    //каждые 10 сек инфа
+    //какие удалены
+
+    //классификацию стратегий, например 4
+
     private FirstLayer<K,V> firstLayer;
 
     public MyCustomCache(FirstLayer<K, V> firstLayer) {
@@ -27,12 +33,21 @@ public class MyCustomCache <K extends Serializable, V extends Serializable> impl
     }
 
     @Override
-    public V get(K key) {
+    public void get(K key) {
         if (firstLayer.containsKey(key)){
-            return firstLayer.get(key);
+            System.out.println(firstLayer.get(key));
         }else {
-            firstLayer.getSecondLayer().get(key);
+            System.out.println(firstLayer.getSecondLayer().get(key));
         }
-        return null;
+    }
+
+    @Override
+    public void printFirstLayer() {
+        firstLayer.forEach((k,v)-> System.out.println("Key : " + k + ", Value : " + v));
+    }
+
+    @Override
+    public void printSecondLayer() {
+        firstLayer.getSecondLayer().print();
     }
 }
