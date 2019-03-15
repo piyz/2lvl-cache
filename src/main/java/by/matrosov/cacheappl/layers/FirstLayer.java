@@ -19,7 +19,8 @@ public class FirstLayer<K extends Serializable,V extends Serializable> extends L
 
         //add eldest element to second layer
         if (size() > MAX_SIZE){
-            LOGGER.info("adding to second layer");
+            LOGGER.info("Oops... First layer is full!");
+            LOGGER.info("object with key = " + eldest.getKey() + ", going to second layer");
             secondLayer.add(eldest);
             return true;
         }else {

@@ -19,8 +19,8 @@ public class PulseGenerator implements Runnable{
         while (true){
             try {
                 LOGGER.info("service going well");
+                myCustomCache.printAllLayers();
                 Thread.sleep(10000);
-                //out all layers?
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

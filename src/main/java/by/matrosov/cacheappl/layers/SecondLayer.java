@@ -1,10 +1,18 @@
 package by.matrosov.cacheappl.layers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SecondLayer<K extends Serializable, V extends Serializable> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(SecondLayer.class);
+
     private static final String FILE_NAME = "data.dat";
     private static boolean emptyFlag = true;
 
@@ -46,19 +54,23 @@ public class SecondLayer<K extends Serializable, V extends Serializable> {
     public void remove(K key){
         Map<K,V> map = getAll();
         for (K k : map.keySet()){
-            if (k == key){
-                map.remove(key);
+            if (k.hashCode() == key.hashCode()){
+                map.remove(k);
+                LOGGER.info("successful remove from second layer");
                 write2file(map);
                 return;
             }
         }
+        LOGGER.info("Oops... Object with key = " + key + " not found on second layer");
     }
 
     public void print(){
         Map<K,V> map;
         try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILE_NAME))){
+            List<String> list = new ArrayList<>();
             map = (Map<K, V>) ois.readObject();
-            map.forEach((k,v)-> System.out.println("Key : " + k + ", Value : " + v));
+            map.forEach((k,v)-> list.add(k + "-" + v));
+            LOGGER.info("Second layer: " + list);
         }catch (Exception e){
             e.printStackTrace();
         }

@@ -26,14 +26,14 @@ public class ObjectGenerator implements Runnable{
 
                 Optional<Options> options = generateRandomOptions();
                 if (options.get() == Options.GET){
-                    LOGGER.info("getting object...");
+                    LOGGER.info("start getting object...");
                     myCustomCache.get(key);
                 }else if (options.get() == Options.ADD){
-                    LOGGER.info("adding object...");
+                    LOGGER.info("start adding object with key = " + key);
                     myCustomCache.add(key, value);
                 }else if (options.get() == Options.REMOVE){
-                    //doesn't test yet
-                    //myCustomCache.remove(key);
+                    LOGGER.info("start removing object with key = " + key);
+                    myCustomCache.remove(key);
                 }
                 Thread.sleep(5000);
             } catch (InterruptedException e) {

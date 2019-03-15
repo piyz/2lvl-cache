@@ -5,6 +5,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MyCustomCache <K extends Serializable, V extends Serializable> implements Cache <K,V> {
 
@@ -24,8 +26,10 @@ public class MyCustomCache <K extends Serializable, V extends Serializable> impl
     @Override
     public void remove(K key) {
         if (firstLayer.containsKey(key)){
+            LOGGER.info("remove object with key = " + key + " from first layer");
             firstLayer.remove(key);
         }else {
+            LOGGER.info("remove object with key = " + key + " from second layer");
             firstLayer.getSecondLayer().remove(key);
         }
     }
@@ -50,7 +54,9 @@ public class MyCustomCache <K extends Serializable, V extends Serializable> impl
 
     @Override
     public void printFirstLayer() {
-        firstLayer.forEach((k,v)-> System.out.println(k + "," + v));
+        List<String> list = new ArrayList<>();
+        firstLayer.forEach((k,v)-> list.add(k + " - " + v));
+        LOGGER.info("First layer: " + list);
     }
 
     @Override
@@ -60,9 +66,7 @@ public class MyCustomCache <K extends Serializable, V extends Serializable> impl
 
     @Override
     public void printAllLayers() {
-        System.out.println("This is the first layer:");
         printFirstLayer();
-        System.out.println("This is the second layer");
         printSecondLayer();
     }
 }
