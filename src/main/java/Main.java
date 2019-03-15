@@ -18,27 +18,5 @@ public class Main {
         ExecutorService service = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         service.execute(objectGenerator);
         service.execute(pulseGenerator);
-
-
-
-        //myCustomCache.add(1, "first");
-        //        myCustomCache.add(2, "second");
-        //        myCustomCache.add(3, "third");
-        //        myCustomCache.add(4, "fourth");
-        //        myCustomCache.add(5, "fifth");
-        //        myCustomCache.add(6, "sixth");
-        //
-        //        System.out.println("this is first layer");
-        //        myCustomCache.printFirstLayer();
-        //
-        //        System.out.println("this is second layer");
-        //        myCustomCache.printSecondLayer();
-        //
-        //        System.out.println("get by key");
-        //        myCustomCache.get(3);
-        //        myCustomCache.get(2);
-
-
-
     }
 }
