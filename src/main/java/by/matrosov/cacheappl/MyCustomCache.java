@@ -1,16 +1,14 @@
 package by.matrosov.cacheappl;
 
 import by.matrosov.cacheappl.layers.FirstLayer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 
 public class MyCustomCache <K extends Serializable, V extends Serializable> implements Cache <K,V> {
 
-    //какие элеенты попали
-    //каждые 10 сек инфа
-    //какие удалены
-
-    //классификацию стратегий, например 4
+    private static final Logger LOGGER = LoggerFactory.getLogger(MyCustomCache.class);
 
     private FirstLayer<K,V> firstLayer;
 
@@ -35,19 +33,27 @@ public class MyCustomCache <K extends Serializable, V extends Serializable> impl
     @Override
     public void get(K key) {
         if (firstLayer.containsKey(key)){
-            System.out.println(firstLayer.get(key));
+            LOGGER.info("getting object from first layer... " + firstLayer.get(key));
         }else {
-            System.out.println(firstLayer.getSecondLayer().get(key));
+            LOGGER.info("getting object from second layer... " + firstLayer.getSecondLayer().get(key));
         }
     }
 
     @Override
     public void printFirstLayer() {
-        firstLayer.forEach((k,v)-> System.out.println("Key : " + k + ", Value : " + v));
+        firstLayer.forEach((k,v)-> System.out.println(k + "," + v));
     }
 
     @Override
     public void printSecondLayer() {
         firstLayer.getSecondLayer().print();
+    }
+
+    @Override
+    public void printAllLayers() {
+        System.out.println("This is the first layer:");
+        printFirstLayer();
+        System.out.println("This is the second layer");
+        printSecondLayer();
     }
 }

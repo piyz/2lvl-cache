@@ -6,7 +6,7 @@ import java.util.Optional;
 public enum Options {
     ADD(0), GET(1), REMOVE(2);
 
-    int value;
+    private int value;
 
     Options(int value) {
         this.value = value;

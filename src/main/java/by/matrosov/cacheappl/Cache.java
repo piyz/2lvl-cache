@@ -6,4 +6,5 @@ public interface Cache<K,V> {
     void get(K key);
     void printFirstLayer();
     void printSecondLayer();
+    void printAllLayers();
 }

@@ -1,15 +1,19 @@
 package by.matrosov.cacheappl.tasks;
 
 import by.matrosov.cacheappl.MyCustomCache;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 import java.util.Random;
 
-public class Generator implements Runnable{
+public class ObjectGenerator implements Runnable{
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ObjectGenerator.class);
 
     private MyCustomCache<Integer, String> myCustomCache;
 
-    public Generator(MyCustomCache<Integer, String> myCustomCache) {
+    public ObjectGenerator(MyCustomCache<Integer, String> myCustomCache) {
         this.myCustomCache = myCustomCache;
     }
 
@@ -22,13 +26,15 @@ public class Generator implements Runnable{
 
                 Optional<Options> options = generateRandomOptions();
                 if (options.get() == Options.GET){
+                    LOGGER.info("getting object...");
                     myCustomCache.get(key);
                 }else if (options.get() == Options.ADD){
+                    LOGGER.info("adding object...");
                     myCustomCache.add(key, value);
                 }else if (options.get() == Options.REMOVE){
+                    //doesn't test yet
                     //myCustomCache.remove(key);
                 }
-
                 Thread.sleep(5000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
